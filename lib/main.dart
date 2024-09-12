@@ -1,33 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:news/screens/main/main_screen.dart';
-
-import 'constants.dart';
+import 'package:task_demo/ui/screen/image_gallrey_screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Flutter Gallery',
       theme: ThemeData(
-        primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: kBgColor,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: TextButton.styleFrom(backgroundColor: kPrimaryColor),
-        ),
-        textTheme: TextTheme(
-          // bodyText1: TextStyle(color: kBodyTextColor),
-          // bodyText2: TextStyle(color: kBodyTextColor),
-          // headline5: TextStyle(color: kDarkBlackColor),
-        ),
+        primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      home: const ImageGalleryScreen(),
     );
   }
 }
