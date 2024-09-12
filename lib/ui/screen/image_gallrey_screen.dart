@@ -32,40 +32,57 @@ class ImageGalleryScreen extends StatelessWidget {
             child: Obx(
               () => controller.images.isEmpty && controller.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
-                  : MasonryGridView.count(
-                      controller: controller.scrollController,
-                      crossAxisCount: MediaQuery.of(context).size.width > 600 ? 4 : 2,
-                      itemCount: controller.images.length,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      itemBuilder: (context, index) {
-                        final image = controller.images[index];
-                        return GestureDetector(
-                          onTap: () {
-                            FocusScope.of(context).unfocus();
-                            Get.to(() => FullScreenImage(image: image));
-                          },
-                          child: Card(
-                            child: Column(
-                              children: [
-                                CachedNetworkImage(
-                                  imageUrl: image['webformatURL'],
-                                  placeholder: (context, url) => const CircularProgressIndicator(),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  : LayoutBuilder(
+                      builder: (context, constraints) {
+                        double screenWidth = constraints.maxWidth;
+                        int crossAxisCount = screenWidth > 600 ? 4 : 2;
+                        double itemWidth = screenWidth / crossAxisCount;
+                        double itemHeight = itemWidth;
+
+                        return MasonryGridView.count(
+                          controller: controller.scrollController,
+                          crossAxisCount: crossAxisCount,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                          itemCount: controller.images.length,
+                          itemBuilder: (context, index) {
+                            final image = controller.images[index];
+                            return Container(
+                              width: itemWidth,
+                              height: itemHeight, // Maintain square shape
+                              child: GestureDetector(
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+                                  Get.to(() => FullScreenImage(image: image));
+                                },
+                                child: Card(
+                                  child: Column(
                                     children: [
-                                      Text('Likes: ${image['likes']}'),
-                                      Text('Views: ${image['views']}'),
+                                      Expanded(
+                                        child: CachedNetworkImage(
+                                          imageUrl: image['webformatURL'],
+                                          placeholder: (context, url) =>
+                                              Center(child: const CircularProgressIndicator()),
+                                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('Likes: ${image['likes']}'),
+                                            Text('Views: ${image['views']}'),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
+                              ),
+                            );
+                          },
                         );
                       },
                     ),
