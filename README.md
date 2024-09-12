@@ -2,4 +2,4 @@
 
 **Live Web Application Link:**
 
-- [link](https://yashvanani.github.io/image_gallery_task/)
+- Gallery [link](https://yashvanani.github.io/image_gallery_task/)
